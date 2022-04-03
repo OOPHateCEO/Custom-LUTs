@@ -1,11 +1,11 @@
 ## My custom .cube file importer and LUT renderer!
 
-Features:
+### Features:
 - Imports and serializes .cube files
 - Uses a full screen compute shader to apply the LUT
 - allows for blending
 
 ![screenie](Animation.gif)
 
-References:
+### References:
 - [Harry Alisavakis - My take on shaders: Color grading with Look-up Textures (LUT)](https://halisavakis.com/my-take-on-shaders-color-grading-with-look-up-textures-lut/)
