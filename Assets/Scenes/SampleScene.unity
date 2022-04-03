@@ -342,8 +342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28fcf7562ff9d284ba5581fd0c28fd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Blend: 1
-  LUT: {fileID: -1307820041623823978, guid: 029846ec467661f45a41cad5a960827b, type: 3}
+  Blend: 0.357
+  LUT: {fileID: -1307820041623823978, guid: e0cc090e9965200419006ca8c406da3f, type: 3}
 --- !u!81 &971782043
 AudioListener:
   m_ObjectHideFlags: 0

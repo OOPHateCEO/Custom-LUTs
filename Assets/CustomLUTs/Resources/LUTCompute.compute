@@ -25,12 +25,12 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float lutBounds = lutSize - 1.0;
     float4 col = saturate(_color[id.xy]);
     float halfColX = 0.5 / (lutSize*lutSize);
-    float halfColY = 0.5 / lutSize;
+    float halfColY = 0.5 / (lutSize);
     float threshold = lutBounds / lutSize;
 
     float xOffset = halfColX + col.r * threshold / lutSize;
-    float yOffset = halfColY + col.g * threshold;
-    float cell = col.b * (lutSize-1);
+    float yOffset = halfColY + col.b * threshold;
+    float cell = col.g * (lutSize-1);
 
     float2 lutPos1 = float2(floor(cell) / lutSize + xOffset, yOffset);
     float2 lutPos2 = float2(ceil(cell) / lutSize + xOffset, yOffset);
