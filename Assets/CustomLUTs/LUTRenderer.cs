@@ -57,6 +57,11 @@ public class LUTRenderer : MonoBehaviour
 
     void OnRenderImage(RenderTexture src, RenderTexture dst)
     {
+        if(LUT == null)
+        {
+            Graphics.Blit(src, dst);
+            return;
+        }
         target = RenderTexture.GetTemporary(src.descriptor);
         target.enableRandomWrite = true;
 
@@ -109,6 +114,5 @@ public class LUTRenderer : MonoBehaviour
 
         compute.SetTexture( kernel, "_lut", tex);
         compute.SetInt("lutSize", LUT.size);
-
     }
 }
