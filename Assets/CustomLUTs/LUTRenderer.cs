@@ -108,7 +108,7 @@ public class LUTRenderer : MonoBehaviour
             }
         }
         // uncomment to save lut as png
-        // byte[] bytes = texture.EncodeToPNG();
+        // byte[] bytes = tex.EncodeToPNG();
         // File.WriteAllBytes(Application.dataPath + "/../" + LUT.name + ".png", bytes);
         tex.Apply(false, false);
 

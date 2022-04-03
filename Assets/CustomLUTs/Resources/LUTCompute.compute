@@ -38,4 +38,5 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float4 gradedCol2 = _lut.SampleLevel(sampler_lut, lutPos2, 0);
                  
     Result[id.xy] = lerp(col, lerp(gradedCol1, gradedCol2, frac(cell)), _blend);
+    //Result[id.xy] = gradedCol1  ;
 }
