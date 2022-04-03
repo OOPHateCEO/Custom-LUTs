@@ -1,3 +1,7 @@
 ## My custom .cube file importer and LUT renderer!
 
-Very basic implementation and functionality at the moment, willing to add LUT generation in the future.
+Features:
+- Imports and serializes .cube files
+- Uses a full screen compute shader to apply the LUT
+- allows for blending
+![screenie]https://media.giphy.com/media/eeeH8P5QHwGKusw7sR/giphy.gif
