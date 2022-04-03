@@ -25,7 +25,7 @@ using UnityEditor;
 //         LR.LUT = EditorGUILayout.ObjectField(LR.LUT, typeof(Cube), false) as Cube;
 //         if(EditorGUI.EndChangeCheck())
 //         {
-//             LR.reInitialize();
+//             LR.ConstructLUT();
 //         }
 //     }
 // }

@@ -7,7 +7,8 @@ RWTexture2D<float4> Result;
 Texture2D<float4> _color;
 Texture2D _lut;
 SamplerState sampler_lut;
-Buffer<float> _blend;
+//Buffer<float> _blend;
+float _blend;
 
 uint width, height;
 
@@ -36,5 +37,6 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float4 gradedCol1 = _lut.SampleLevel(sampler_lut, lutPos1, 0);
     float4 gradedCol2 = _lut.SampleLevel(sampler_lut, lutPos2, 0);
                  
-    Result[id.xy] = lerp(col, lerp(gradedCol1, gradedCol2, frac(cell)), _blend[0]);
+    Result[id.xy] = lerp(col, lerp(gradedCol1, gradedCol2, frac(cell)), _blend);
+    //Result[id.xy] = _lut.SampleLevel(sampler_lut, float2(0,0), 0);
 }
