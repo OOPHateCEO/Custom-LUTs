@@ -1,0 +1,40 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+Texture2D<float4> _color;
+Texture2D _lut;
+SamplerState sampler_lut;
+Buffer<float> _blend;
+
+uint width, height;
+
+uint lutSize;
+
+
+#include "UnityCG.cginc"
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = id.xy/ float2(width, height);
+
+    float lutBounds = lutSize - 1.0;
+    float4 col = saturate(_color[id.xy]);
+    float halfColX = 0.5 / (lutSize*lutSize);
+    float halfColY = 0.5 / lutSize;
+    float threshold = lutBounds / lutSize;
+
+    float xOffset = halfColX + col.r * threshold / lutSize;
+    float yOffset = halfColY + col.g * threshold;
+    float cell = col.b * (lutSize-1);
+
+    float2 lutPos1 = float2(floor(cell) / lutSize + xOffset, yOffset);
+    float2 lutPos2 = float2(ceil(cell) / lutSize + xOffset, yOffset);
+    float4 gradedCol1 = _lut.SampleLevel(sampler_lut, lutPos1, 0);
+    float4 gradedCol2 = _lut.SampleLevel(sampler_lut, lutPos2, 0);
+                 
+    Result[id.xy] = lerp(col, lerp(gradedCol1, gradedCol2, frac(cell)), _blend[0]);
+}
