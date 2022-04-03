@@ -90,6 +90,7 @@ public class LUTRenderer : MonoBehaviour
         command.DispatchCompute(compute, kernel, threadGroupsX, threadGroupsY, 1);
 
         command.Blit(targetRT, BuiltinRenderTextureType.CameraTarget);
+
         _camera.Render();
     }
 
@@ -150,8 +151,9 @@ public class LUTRenderer : MonoBehaviour
                 texture.SetPixel(i, j, LUT.colorValues[ i + (s*j)]);
             }
         }
-        byte[] bytes = texture.EncodeToPNG();
-        File.WriteAllBytes(Application.dataPath + "/../" + LUT.name + ".png", bytes);
+        // uncomment to save lut as png
+        // byte[] bytes = texture.EncodeToPNG();
+        // File.WriteAllBytes(Application.dataPath + "/../" + LUT.name + ".png", bytes);
         texture.Apply(false, false);
     }
 }

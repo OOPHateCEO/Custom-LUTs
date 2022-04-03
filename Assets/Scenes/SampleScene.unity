@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Blend: 1
-  LUT: {fileID: -1307820041623823978, guid: 7f8d68eef41b5db43a9090d0a4fbec47, type: 3}
+  LUT: {fileID: -1307820041623823978, guid: 029846ec467661f45a41cad5a960827b, type: 3}
 --- !u!81 &971782043
 AudioListener:
   m_ObjectHideFlags: 0
@@ -384,7 +384,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
