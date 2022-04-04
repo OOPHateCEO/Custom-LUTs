@@ -40,19 +40,19 @@ public class LUTRenderer : MonoBehaviour
     {
         if(ScreenWidth != _camera.pixelWidth || ScreenHeight != _camera.pixelHeight)
         {
-            ScreenWidth = _camera.pixelWidth;
-            ScreenHeight = _camera.pixelHeight;
+            InitializeCompute(src);
         }
     }
 
     RenderTexture target;
-    int colorID, resultID, widthID, heightID;
+    int colorID, resultID, widthID, heightID, blendID;
     void setShaderNameIDs()
     {
         colorID = Shader.PropertyToID("_color");
         resultID = Shader.PropertyToID("Result");
         widthID = Shader.PropertyToID("width");
         heightID = Shader.PropertyToID("height");
+        blendID = Shader.PropertyToID("_blend");
     }
 
     void OnRenderImage(RenderTexture src, RenderTexture dst)
@@ -62,6 +62,22 @@ public class LUTRenderer : MonoBehaviour
             Graphics.Blit(src, dst);
             return;
         }
+        
+        if(Application.isEditor)
+        {
+            InitializeCompute(src);
+            DispatchCompute(dst);
+            target.Release();
+        }
+        else
+        {
+            ScreenScaled(src);
+            DispatchCompute(dst);
+        }
+    }
+
+    void InitializeCompute(RenderTexture src)
+    {
         target = RenderTexture.GetTemporary(src.descriptor);
         target.enableRandomWrite = true;
 
@@ -72,14 +88,18 @@ public class LUTRenderer : MonoBehaviour
         compute.SetTexture( kernel, resultID, target);
         compute.SetInt(widthID, ScreenWidth);
         compute.SetInt(heightID, ScreenHeight);
+    }
 
-        int threadGroupsX = Mathf.CeilToInt(ScreenWidth / 8.0f);
-        int threadGroupsY = Mathf.CeilToInt(ScreenHeight / 8.0f);
+    void DispatchCompute(RenderTexture dst)
+    {
+        uint threadsX, threadsY, threadsZ;
+        compute.GetKernelThreadGroupSizes(kernel, out threadsX, out threadsY, out threadsZ);
+        int threadGroupsX = Mathf.CeilToInt(ScreenWidth / (float)threadsX);
+        int threadGroupsY = Mathf.CeilToInt(ScreenHeight / (float)threadsY);
 
         compute.Dispatch(kernel, threadGroupsX, threadGroupsY, 1);
 
         Graphics.Blit(target, dst);
-        target.Release();
     }
 
     Cube prevLUT;
@@ -90,7 +110,12 @@ public class LUTRenderer : MonoBehaviour
             prevLUT = LUT;
             ConstructLUT();
         }
-        compute.SetFloat( "_blend", Blend);
+        compute.SetFloat( blendID, Blend);
+    }
+
+    void OnDisable()
+    {
+        target?.Release();
     }
     void ConstructLUT()
     {
