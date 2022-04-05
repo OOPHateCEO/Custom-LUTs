@@ -78,6 +78,7 @@ public class LUTRenderer : MonoBehaviour
 
     void InitializeCompute(RenderTexture src)
     {
+        target?.Release();
         target = RenderTexture.GetTemporary(src.descriptor);
         target.enableRandomWrite = true;
 
